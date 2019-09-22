@@ -4,15 +4,15 @@ import (
 	"kanca-studio/palang/service/base"
 )
 
-func NewService(repository Repository) Service {
-	s := Service{}
-	s.BaseService.Repository = &repository
-	s.repo = repository
+func NewService(repo repository) service {
+	s := service{}
+	s.BaseService.Repository = &repo
+	s.repo = repo
 
 	return s
 }
 
-type Service struct {
+type service struct {
 	base.BaseService
-	repo Repository
+	repo repository
 }

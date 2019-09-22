@@ -5,16 +5,16 @@ import (
 	"kanca-studio/palang/service/base"
 )
 
-func NewRepository(db *gorm.DB) Repository {
-	return Repository{
+func NewRepository(db *gorm.DB) repository {
+	return repository{
 		base.NewBaseRepository(db, Model{}),
 	}
 }
 
-type Repository struct {
+type repository struct {
 	base.BaseRepository
 }
 
-func (*Repository) anotherFunction() bool {
+func (*repository) anotherFunction() bool {
 	return true
 }
