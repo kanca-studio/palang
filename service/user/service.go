@@ -11,12 +11,18 @@ import (
 
 var JWTSECRET = "secret-kanca"
 
-func NewService(repo repository) service {
+type Service interface {
+	Register(email, password string) (Model, error)
+	Login(email, password string) (interface{}, error)
+	Activated(token string) (interface{}, error)
+}
+
+func NewService(repo repository) Service {
 	s := service{}
 	s.BaseService.Repository = &repo
 	s.repo = repo
 
-	return s
+	return &s
 }
 
 type service struct {
