@@ -4,7 +4,7 @@ type BaseService struct {
 	Repository InterfaceBaseRepository
 }
 
-func (base *BaseService) Create(params interface{}) interface{} {
+func (base *BaseService) Create(params interface{}) error {
 	return base.Repository.Create(params)
 }
 
