@@ -11,9 +11,17 @@ import (
 
 var JWTSECRET = "secret-kanca"
 
+type IdentifierType int
+
+const (
+	Email IdentifierType = iota
+	PhoneNumber
+	Username
+)
+
 type Service interface {
-	Register(email, password string) (Model, error)
-	Login(email, password string) (interface{}, error)
+	Register(identifierType IdentifierType, identifier, password string) (Model, error)
+	Login(identifierType IdentifierType, identifier, password string) (interface{}, error)
 	Activated(token string) (interface{}, error)
 }
 
@@ -30,20 +38,47 @@ type service struct {
 	repo repository
 }
 
-func (s *service) Register(email, password string) (Model, error) {
+func (s *service) Register(identifierType IdentifierType, identifier, password string) (Model, error) {
 	hash, _ := s.hashPassword(password)
-	data := Model{
-		Email:    email,
-		Password: hash,
-		Verified: false,
+
+	var data Model
+	switch identifierType {
+	case Email:
+		data = Model{
+			Email:    identifier,
+			Password: hash,
+			Verified: false,
+		}
+	case PhoneNumber:
+		data = Model{
+			PhoneNumber: identifier,
+			Password:    hash,
+			Verified:    false,
+		}
+	case Username:
+		data = Model{
+			Username: identifier,
+			Password: hash,
+			Verified: false,
+		}
 	}
+
 	err := s.Create(data)
 	return data, err
 }
 
-func (s *service) Login(email, password string) (interface{}, error) {
+func (s *service) Login(identifierType IdentifierType, identifier, password string) (interface{}, error) {
 	var err error
-	result, err := s.Find(Model{Email: email})
+	var result interface{}
+
+	switch identifierType {
+	case Email:
+		result, err = s.Find(Model{Email: identifier})
+	case PhoneNumber:
+		result, err = s.Find(Model{PhoneNumber: identifier})
+	case Username:
+		result, err = s.Find(Model{Username: identifier})
+	}
 	if err != nil {
 		return err, nil
 	}
@@ -82,7 +117,7 @@ func validateToken(tokenString string) error {
 		}
 
 		return []byte(JWTSECRET), nil
-	});
+	})
 	if err != nil {
 		return err
 	}
