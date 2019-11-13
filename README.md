@@ -8,6 +8,7 @@ Simple authentication service, to help create application faster. Main Idea is h
 - Reset Password
 - Detail User
 - Validate Token
+- Refresh Token
 
 ## Foldering
 Basic idea for foldering we breakdown breakdown to 3 folder, Service, Manager and Delivery
