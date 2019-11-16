@@ -11,6 +11,7 @@ type InterfaceBaseRepository interface {
 	Delete(filter interface{}) error
 	Remove(filter interface{}) error
 }
+
 func NewBaseRepository(db *gorm.DB, model interface{}) BaseRepository {
 	return BaseRepository{
 		db: db.Model(model),

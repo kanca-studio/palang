@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var s service
+var s Service
 
 func init() {
 	database.Init("localhost", 5432, "posgtres", "posgtres", "kanca", true)
