@@ -3,17 +3,22 @@ package manager
 import (
 	"errors"
 	"kanca-studio/palang/service/auth"
-	"kanca-studio/palang/service/email"
 	"kanca-studio/palang/service/user"
 )
 
-type userManager struct {
-	userService  user.Service
-	emailService email.Service
-	authService  auth.Service
+type UserManager struct {
+	userService user.Service
+	authService auth.Service
 }
 
-func (m *userManager) Register(identifierType user.IdentifierType, identifier, password string) error {
+func NewUserManager(userService user.Service, authService auth.Service) UserManager {
+	return UserManager{
+		userService: userService,
+		authService: authService,
+	}
+}
+
+func (m *UserManager) Register(identifierType user.IdentifierType, identifier, password string) error {
 
 	hash, _ := m.authService.HashPassword(password)
 	_, err := m.userService.CreateUser(identifierType, identifier, hash)
@@ -26,7 +31,7 @@ func (m *userManager) Register(identifierType user.IdentifierType, identifier, p
 	return nil
 }
 
-func (m *userManager) Login(identifierType user.IdentifierType, identifier, password string) (string, error) {
+func (m *UserManager) Login(identifierType user.IdentifierType, identifier, password string) (string, error) {
 	data, err := m.userService.GetUserByIdentifier(identifierType, identifier)
 
 	if err != nil {
@@ -49,14 +54,14 @@ func (m *userManager) Login(identifierType user.IdentifierType, identifier, pass
 	return token, nil
 }
 
-func (m *userManager) ValidateToken(token string) error {
+func (m *UserManager) ValidateToken(token string) error {
 	if _, err := m.authService.ValidateToken(token); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *userManager) Me(token string) (user.Model, error) {
+func (m *UserManager) Me(token string) (user.Model, error) {
 	claim, err := m.authService.ValidateToken(token)
 
 	if err != nil {

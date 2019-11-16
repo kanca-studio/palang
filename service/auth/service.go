@@ -20,7 +20,12 @@ type Service interface {
 type service struct {
 }
 
-func ValidateToken(tokenString string) (jwt.MapClaims, error) {
+func NewService() Service {
+	s := &service{}
+	return s
+}
+
+func (s *service) ValidateToken(tokenString string) (jwt.MapClaims, error) {
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
