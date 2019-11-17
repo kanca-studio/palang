@@ -7,8 +7,12 @@ type Model struct {
 	Name              string `gorm:"column:name"`
 	Email             string `gorm:"column:email"`
 	PhoneNumber       string `gorm:"column:phone_number"`
-	Username          string `gorm:"column:phone_number"`
+	Username          string `gorm:"column:username"`
 	Password          string `gorm:"column:password"`
 	Verified          bool   `gorm:"column:verified"`
 	VerificationToken string `gorm:"column:verification_token"`
+}
+
+func (Model) TableName() string {
+	return "users"
 }

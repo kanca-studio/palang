@@ -2,10 +2,10 @@ package database
 
 import (
 	"fmt"
-	"log"
-	"sync"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"log"
+	"sync"
 )
 
 var (

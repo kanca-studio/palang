@@ -1,0 +1,56 @@
+### before you start and if you using visual studio code please install
+### https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+### Endpoint For check status servics up,
+### ENDPOINT : /
+### sample request
+GET http://localhost:8000
+Content-Type: application/json
+
+
+### Endpoint For Register
+### ENDPOINT :register
+### identifierType value one of Email,PhoneNumber,UserName
+### sample request
+POST http://localhost:8000/register
+Content-Type: application/json
+
+{
+  "identifierType":"Email",
+  "identifier":"test@gmail.com",
+  "password":"123456"
+}
+
+### Endpoint For Login
+### ENDPOINT :login
+### identifierType value one of Email,PhoneNumber,UserName
+### sample request
+POST http://localhost:8000/login
+Content-Type: application/json
+
+{
+  "identifierType":"Email",
+  "identifier":"test@gmail.com",
+  "password":"123456"
+}
+
+
+### Endpoint For Get profile
+### ENDPOINT : /user/me
+### token from login request
+### sample request
+GET http://localhost:8000/user/me
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzQwNDUzODIsInN1YiI6Nn0.wQVHwuYYtOPn3J9cX4M45InQpJ56M92Z_GXw0HKWRZI // token from login
+
+
+### Endpoint For check validation token valid or not
+### ENDPOINT : /validate-token
+### token from login request
+### sample request
+GET http://localhost:8000/validate-token
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzQwNDUzODIsInN1YiI6Nn0.wQVHwuYYtOPn3J9cX4M45InQpJ56M92Z_GXw0HKWRZI // token from login
+
+
+### // token from login
