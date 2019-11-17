@@ -28,8 +28,7 @@ func (repo *BaseRepository) Create(param interface{}) error {
 }
 
 func (repo *BaseRepository) FindById(id uint, out interface{}) error {
-
-	err := repo.db.First(&out, id).Error
+	err := repo.db.First(out, id).Error
 	return err
 }
 

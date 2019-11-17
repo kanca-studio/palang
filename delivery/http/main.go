@@ -16,6 +16,7 @@ var userManager manager.UserManager
 
 func init() {
 	database.Init("localhost", 5432, "postgres", "postgres", "palang", true)
+
 	//auto migrate
 	database.GetInstance().AutoMigrate(user.Model{})
 	var (
