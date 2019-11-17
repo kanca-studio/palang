@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/jinzhu/gorm"
-	"kanca-studio/palang/service/base"
+	"github.com/kanca-studio/palang/service/base"
 )
 
 func NewRepository(db *gorm.DB) repository {

@@ -2,8 +2,9 @@ package routing
 
 import (
 	"encoding/json"
-	"kanca-studio/palang/delivery/http/schema"
 	"net/http"
+
+	"github.com/kanca-studio/palang/delivery/http/schema"
 )
 
 func respondWithError(w http.ResponseWriter, code int, message string, err error) {

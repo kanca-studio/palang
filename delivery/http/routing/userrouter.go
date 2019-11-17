@@ -3,12 +3,13 @@ package routing
 import (
 	"encoding/json"
 	"errors"
+	"net/http"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
-	"kanca-studio/palang/delivery/http/schema"
-	"kanca-studio/palang/manager"
-	"net/http"
+	"github.com/kanca-studio/palang/delivery/http/schema"
+	"github.com/kanca-studio/palang/manager"
 )
 
 var validate *validator.Validate
@@ -79,7 +80,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := userManager.Login(body.IdentifierType, body.Identifier, body.Password);
+	token, err := userManager.Login(body.IdentifierType, body.Identifier, body.Password)
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "Failed Login ", err)
 		return

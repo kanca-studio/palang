@@ -3,8 +3,9 @@ package manager
 import (
 	"errors"
 	"fmt"
-	"kanca-studio/palang/service/auth"
-	"kanca-studio/palang/service/user"
+
+	"github.com/kanca-studio/palang/service/auth"
+	"github.com/kanca-studio/palang/service/user"
 )
 
 type UserManager struct {
@@ -64,7 +65,6 @@ func (m *UserManager) ValidateToken(token string) error {
 	}
 	return nil
 }
-
 
 func (m *UserManager) Me(token string) (user.Model, error) {
 	claim, err := m.authService.ValidateToken(token)

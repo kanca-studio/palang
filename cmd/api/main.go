@@ -3,21 +3,36 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
-	"kanca-studio/palang/database"
-	"kanca-studio/palang/delivery/http/routing"
-	"kanca-studio/palang/manager"
-	"kanca-studio/palang/service/auth"
-	"kanca-studio/palang/service/user"
 	"log"
 	"net/http"
+
 	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/kanca-studio/palang/database"
+	"github.com/kanca-studio/palang/delivery/http/routing"
+	"github.com/kanca-studio/palang/manager"
+	"github.com/kanca-studio/palang/service/auth"
+	"github.com/kanca-studio/palang/service/user"
+
+	"github.com/bukalapak/ottoman/x/env"
+	"github.com/subosito/gotenv"
 )
 
 var userManager manager.UserManager
 
 func init() {
-	database.Init("localhost", 5432, "postgres", "postgres", "palang", true)
+	if err := gotenv.Load(); err != nil {
+		panic(err)
+	}
+	database.Init(
+		env.String("DATABASE_HOST"),
+		env.Int("DATABASE_PORT"),
+		env.String("DATABASE_USERNAME"),
+		env.String("DATABASE_PASSWORD"),
+		env.String("DATABASE_NAME"),
+		true,
+	)
 
 	//auto migrate
 	database.GetInstance().AutoMigrate(user.Model{})
