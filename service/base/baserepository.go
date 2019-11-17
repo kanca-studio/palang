@@ -4,9 +4,9 @@ import "github.com/jinzhu/gorm"
 
 type InterfaceBaseRepository interface {
 	Create(param interface{}) error
-	FindById(id uint) (interface{}, error)
-	Find(filter interface{}) (interface{}, error)
-	FindAll(filter interface{}) ([]interface{}, error)
+	FindById(id uint, out interface{}) error
+	Find(filter interface{}, out interface{}) error
+	FindAll(filter interface{}, outs interface{}) error
 	Update(filter interface{}, param interface{}) error
 	Delete(filter interface{}) error
 	Remove(filter interface{}) error
@@ -23,25 +23,24 @@ type BaseRepository struct {
 }
 
 func (repo *BaseRepository) Create(param interface{}) error {
+
 	return repo.db.Create(param).Error
 }
 
-func (repo *BaseRepository) FindById(id uint) (interface{}, error) {
-	var out interface{}
+func (repo *BaseRepository) FindById(id uint, out interface{}) error {
+
 	err := repo.db.First(&out, id).Error
-	return out, err
+	return err
 }
 
-func (repo *BaseRepository) Find(filter interface{}) (interface{}, error) {
-	var out interface{}
-	err := repo.db.Where(filter).First(&out).Error
-	return out, err
+func (repo *BaseRepository) Find(filter interface{}, out interface{}) error {
+	err := repo.db.Where(filter).First(out).Error
+	return err
 }
 
-func (repo *BaseRepository) FindAll(filter interface{}) ([]interface{}, error) {
-	var outs []interface{}
-	err := repo.db.Where(filter).Find(&outs).Error
-	return outs, err
+func (repo *BaseRepository) FindAll(filter interface{}, outs interface{}) error {
+	err := repo.db.Where(filter).Find(outs).Error
+	return err
 }
 
 func (repo *BaseRepository) Update(filter interface{}, param interface{}) error {

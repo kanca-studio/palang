@@ -1,6 +1,8 @@
 package user
 
 import (
+	"errors"
+	"github.com/jinzhu/gorm"
 	"kanca-studio/palang/service/base"
 )
 
@@ -14,8 +16,9 @@ const (
 
 type Service interface {
 	base.InterfaceBaseRepository
-	CreateUser(identifierType IdentifierType, identifier, password string) (Model, error)
-	GetUserByIdentifier(identifierType IdentifierType, identifier string) (Model, error)
+	CreateUser(identifierTypeStr IdentifierType, identifier, password string) (Model, error)
+	GetUserByIdentifier(identifierTypeStr IdentifierType, identifier string) (Model, error)
+	IdentifierTypeToConst(identifierType string) IdentifierType
 }
 
 func NewService(repo repository) Service {
@@ -55,25 +58,45 @@ func (s *service) CreateUser(identifierType IdentifierType, identifier, hashPass
 		}
 	}
 
-	err := s.Create(data)
+	//check user exist
+	checking, err := s.GetUserByIdentifier(identifierType, identifier);
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
+		return data, err
+	}
+	if checking.ID != 0 {
+		return data, errors.New("user alerady exist")
+	}
+
+	err = s.Create(&data)
 	return data, err
 }
 
 func (s *service) GetUserByIdentifier(identifierType IdentifierType, identifier string) (Model, error) {
 	var err error
-	var result interface{}
+
+	var result Model
 
 	switch identifierType {
 	case Email:
-		result, err = s.Find(Model{Email: identifier})
+		err = s.Find(Model{Email: identifier}, &result)
 	case PhoneNumber:
-		result, err = s.Find(Model{PhoneNumber: identifier})
+		err = s.Find(Model{PhoneNumber: identifier}, &result)
 	case Username:
-		result, err = s.Find(Model{Username: identifier})
+		err = s.Find(Model{Username: identifier}, &result)
 	}
 	if err != nil {
 		return Model{}, err
 	}
-	user := result.(Model)
-	return user, err
+
+	return result, err
+}
+
+func (s *service) IdentifierTypeToConst(identifierType string) IdentifierType {
+	if identifierType == "Username" {
+		return Username
+	}
+	if identifierType == "PhoneNumber" {
+		return PhoneNumber
+	}
+	return Email
 }

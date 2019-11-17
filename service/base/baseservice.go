@@ -8,16 +8,16 @@ func (base *BaseService) Create(params interface{}) error {
 	return base.Repository.Create(params)
 }
 
-func (base *BaseService) FindById(id uint) (interface{}, error) {
-	return base.Repository.FindById(id)
+func (base *BaseService) FindById(id uint, out interface{}) error {
+	return base.Repository.FindById(id, out)
 }
 
-func (base *BaseService) Find(filter interface{}) (interface{}, error) {
-	return base.Repository.Find(filter)
+func (base *BaseService) Find(filter interface{}, out interface{}) error {
+	return base.Repository.Find(filter, out)
 }
 
-func (base *BaseService) FindAll(filter interface{}) ([]interface{}, error) {
-	return base.Repository.FindAll(filter)
+func (base *BaseService) FindAll(filter interface{}, outs interface{}) error {
+	return base.Repository.FindAll(filter, outs)
 }
 
 func (base *BaseService) Update(filter interface{}, param interface{}) error {
@@ -28,6 +28,7 @@ func (base *BaseService) Delete(filter interface{}) error {
 	return base.Repository.Delete(filter)
 
 }
+
 // Remove for hard Delete
 func (base *BaseService) Remove(filter interface{}) error {
 	return base.Repository.Remove(filter)

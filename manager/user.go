@@ -18,8 +18,9 @@ func NewUserManager(userService user.Service, authService auth.Service) UserMana
 	}
 }
 
-func (m *UserManager) Register(identifierType user.IdentifierType, identifier, password string) error {
+func (m *UserManager) Register(identifierTypeStr, identifier, password string) error {
 
+	identifierType := m.userService.IdentifierTypeToConst(identifierTypeStr)
 	hash, _ := m.authService.HashPassword(password)
 	_, err := m.userService.CreateUser(identifierType, identifier, hash)
 	if err != nil {
@@ -31,7 +32,9 @@ func (m *UserManager) Register(identifierType user.IdentifierType, identifier, p
 	return nil
 }
 
-func (m *UserManager) Login(identifierType user.IdentifierType, identifier, password string) (string, error) {
+func (m *UserManager) Login(identifierTypeStr, identifier, password string) (string, error) {
+
+	identifierType := m.userService.IdentifierTypeToConst(identifierTypeStr)
 	data, err := m.userService.GetUserByIdentifier(identifierType, identifier)
 
 	if err != nil {
@@ -67,13 +70,11 @@ func (m *UserManager) Me(token string) (user.Model, error) {
 	if err != nil {
 		return user.Model{}, err
 	}
-
+	var dataUser user.Model
 	id := claim["sub"].(uint)
-	result, err := m.userService.FindById(id)
-	if err != nil {
+	if err := m.userService.FindById(id, &dataUser); err != nil {
 		return user.Model{}, err
 	}
-	dataUser := result.(user.Model)
 
 	return dataUser, err
 }
