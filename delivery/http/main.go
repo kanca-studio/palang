@@ -2,12 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"kanca-studio/palang/database"
 	"kanca-studio/palang/delivery/http/routing"
 	"kanca-studio/palang/manager"
 	"kanca-studio/palang/service/auth"
 	"kanca-studio/palang/service/user"
+	"log"
 	"net/http"
 	"time"
 )
@@ -36,7 +38,9 @@ func main() {
 	router.HandleFunc("/", Index).Methods("GET", "POST")
 	routing.UserRouter(router, userManager)
 
-	http.ListenAndServe(":8000", router)
+	fmt.Println("Running on 8000")
+	log.Fatal(http.ListenAndServe(":8000", router))
+
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {

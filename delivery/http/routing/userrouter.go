@@ -21,7 +21,7 @@ func UserRouter(router *mux.Router, _userManager manager.UserManager) {
 	router.HandleFunc("/register", register).Methods("POST")
 	router.HandleFunc("/login", login).Methods("POST")
 	router.HandleFunc("/user/me", checkAuth(me)).Methods("GET", "POST")
-	router.HandleFunc("/validate", validateToken).Methods("GET", "POST")
+	router.HandleFunc("/validate-token", validateToken).Methods("GET", "POST")
 }
 
 func checkAuth(next http.HandlerFunc) http.HandlerFunc {
@@ -94,13 +94,13 @@ func validateToken(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get("Authorization")
 	if err := userManager.ValidateToken(token); err != nil {
 		json.NewEncoder(w).Encode(map[string]bool{
-			"success": false,
+			"valid": false,
 		})
 		return
 	}
 
 	json.NewEncoder(w).Encode(map[string]bool{
-		"success": true,
+		"valid": true,
 	})
 }
 
