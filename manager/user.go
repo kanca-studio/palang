@@ -2,7 +2,6 @@ package manager
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/kanca-studio/palang/service/auth"
 	"github.com/kanca-studio/palang/service/user"
@@ -73,7 +72,6 @@ func (m *User) Me(token string) (user.Model, error) {
 		return user.Model{}, err
 	}
 	var dataUser user.Model
-	fmt.Println(claim)
 	id := uint(claim["sub"].(float64))
 	if err := m.userService.FindById(id, &dataUser); err != nil {
 		return user.Model{}, err
