@@ -22,9 +22,15 @@ in this it's delivery protocol, so can be multiple delivery (grpc, rest API, Gra
 
 ## How To Run
 
+Copy env sample `cat env.sample > .env`
+
+### Run test
+
+`make test`
+
 ### Http Delivery
 
-Please go delivery/http and run main.go file `go run main.go`, don't forgot to change db config
+`make start`
 
 ```gotemplate
 database.Init("localhost", 5432, "postgres", "postgres", "palang", true)
