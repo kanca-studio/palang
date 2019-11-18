@@ -13,9 +13,9 @@ import (
 )
 
 var validate *validator.Validate
-var userManager manager.UserManager
+var userManager manager.User
 
-func UserRouter(router *mux.Router, _userManager manager.UserManager) {
+func UserRouter(router *mux.Router, _userManager manager.User) {
 	validate = validator.New()
 	userManager = _userManager
 
