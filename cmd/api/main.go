@@ -19,7 +19,7 @@ import (
 	"github.com/subosito/gotenv"
 )
 
-var userManager manager.UserManager
+var userManager manager.User
 
 func init() {
 	if err := gotenv.Load(); err != nil {
@@ -37,14 +37,14 @@ func init() {
 	//auto migrate
 	database.GetInstance().AutoMigrate(user.Model{})
 	var (
-		userRepo = user.NewRepository(database.GetInstance())
+		userRepo = user.NewRepository(user.WithGorm(database.GetInstance()))
 	)
 
 	var (
 		userService = user.NewService(userRepo)
 		authService = auth.NewService()
 	)
-	userManager = manager.NewUserManager(userService, authService)
+	userManager = manager.NewUser(userService, authService)
 
 }
 
