@@ -15,9 +15,9 @@ import (
 var validate *validator.Validate
 var userManager manager.User
 
-func UserRouter(router *mux.Router, _userManager manager.User) {
+func UserRouter(router *mux.Router, um manager.User) {
 	validate = validator.New()
-	userManager = _userManager
+	userManager = um
 
 	router.HandleFunc("/register", register).Methods("POST")
 	router.HandleFunc("/login", login).Methods("POST")

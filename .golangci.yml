@@ -1,0 +1,21 @@
+run:
+  deadline: 5m
+linters:
+  presets:
+    - bugs
+    - complexity
+    - format
+    - style
+    - unused
+    - gosec
+  disable:
+    - errcheck
+    - lll
+    - scopelint
+    - gochecknoglobals
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gosec
+        - dupl
