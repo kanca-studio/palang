@@ -2,8 +2,9 @@ package user
 
 import (
 	"errors"
+
 	"github.com/jinzhu/gorm"
-	"kanca-studio/palang/service/base"
+	"github.com/kanca-studio/palang/service/base"
 )
 
 type IdentifierType int
@@ -59,7 +60,7 @@ func (s *service) CreateUser(identifierType IdentifierType, identifier, hashPass
 	}
 
 	//check user exist
-	checking, err := s.GetUserByIdentifier(identifierType, identifier);
+	checking, err := s.GetUserByIdentifier(identifierType, identifier)
 	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return data, err
 	}

@@ -3,12 +3,12 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"golang.org/x/crypto/bcrypt"
 	"time"
-)
 
-var JWTSECRET = "secret-kanca"
+	"github.com/bukalapak/ottoman/x/env"
+	jwt "github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type Service interface {
 	ValidateToken(tokenString string) (jwt.MapClaims, error)
@@ -33,7 +33,7 @@ func (s *service) ValidateToken(tokenString string) (jwt.MapClaims, error) {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return []byte(JWTSECRET), nil
+		return []byte(s.JwtSecret()), nil
 	})
 	if err != nil {
 		return nil, err
@@ -64,6 +64,10 @@ func (s *service) CreateToken(id uint) (string, error) {
 	claims["sub"] = id
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
-	t, err := token.SignedString([]byte(JWTSECRET))
+	t, err := token.SignedString([]byte(s.JwtSecret()))
 	return t, err
+}
+
+func (s service) JwtSecret() string {
+	return env.String("JWT_SECRET")
 }
